@@ -2,8 +2,6 @@
 // Chase
 // 9/21/2021
 //
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
 let x = 0;
 let y = 0;
 let radius = 25;
@@ -11,9 +9,8 @@ let speed = 5;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
 }
-
-
 
 function draw() {
   background(220);
@@ -47,3 +44,4 @@ function handleKeys(){
     x += speed;
   }
 }
+
