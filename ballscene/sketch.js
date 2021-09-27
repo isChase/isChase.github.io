@@ -16,6 +16,7 @@ function setup() {
 function draw() {
   background(220);
 
+  checkIfBallTouchingMouse();
   moveBall();
   displayBall();
 }
@@ -23,6 +24,16 @@ function mousePressed(){
   spawnBall();
   ballArray[ballArray.length-1].x = mouseX;
   ballArray[ballArray.length-1].y = mouseY;
+}
+
+
+function checkIfBallTouchingMouse(){
+  for (let i = ballArray.length-1; i >= 0; i--){
+    let howFar = dist(ballArray[i].x, ballArray[i].y, mouseX, mouseY);
+    if (howFar < ballArray[i].radius) {
+      ballArray.splice(i, 1); 
+    }
+  }
 }
 
 function spawnBall(){
