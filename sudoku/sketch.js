@@ -18,10 +18,10 @@ let grid;
 
 function setup() {
   if (windowWidth < windowHeight){
-    createCanvas(windowWidth, windowWidth);
+    createCanvas(windowWidth*0.8, windowWidth*0.8);
   }
   else {
-    createCanvas(windowHeight, windowHeight);
+    createCanvas(windowHeight*0.8, windowHeight*0.8);
   }
 
   grid = initialGrid;
@@ -31,6 +31,11 @@ function setup() {
 function draw() {
   background(220);
   displayGrid();
+}
+
+// bad call if you're grid is gonna change
+function windowResized(){
+  setup();
 }
 
 function displayGrid(){
@@ -58,17 +63,4 @@ function drawCageLines(){
     line(0, location*cellSize, width, location*cellSize);
     line(location*cellSize, 0, location*cellSize, height);
   }
-
-  // //horizontal lines
-  // line(0, 0*cellSize, width, 0*cellSize);
-  // line(0, 3*cellSize, width, 3*cellSize);
-  // line(0, 6*cellSize, width, 6*cellSize);
-  // line(0, 9*cellSize, width, 9*cellSize);
-  
-  // // vertical lines
-  // line(0*cellSize, 0, 0*cellSize, height);
-  // line(3*cellSize, 0, 3*cellSize, height);
-  // line(6*cellSize, 0, 6*cellSize, height);
-  // line(9*cellSize, 0, 9*cellSize, height);
-  
 }
