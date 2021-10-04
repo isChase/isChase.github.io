@@ -1,15 +1,16 @@
-// grid neighbours
+// character + grid
 
 let grid;
-let gridDimensions = 40;
+let gridDimentions = 10;
 let cellSize;
-let autoPlay = false;
-let gun;
+let level1;
+let playerX = 0;
+let playerY = 0;
+
 
 function preload(){
-  gun = loadJSON("assets/gosper-gun.json");
+  level1 = loadJSON("assets/level1.json");
 }
-
 
 function setup() {
   if (windowHeight < windowWidth){
@@ -18,78 +19,50 @@ function setup() {
   else {
     createCanvas(windowWidth, windowWidth);
   }
+  grid = level1;
+  cellSize = width / gridDimentions;
 
-  grid = createRandomArray(gridDimensions);
-  cellSize = width / gridDimensions;
+  //place player
+  grid[playerY][playerX] = 9;
 }
 
 function draw() {
   background(220);
   displayGrid();
-  if (autoPlay && frameCount % 10 === 0) {
-    update();
-  }
 }
 
 function keyPressed(){
-  if (key === "e"){
-    grid = createEmptyArray(gridDimensions);
+  if (key === "s"){
+    tryMovingTo(playerX, playerY+1);
   }
-  if (key === "r"){
-    grid = createRandomArray(gridDimensions);
+  else if (key === "w"){
+    tryMovingTo(playerX, playerY-1);
   }
-  if (key === " ") {
-    update();
+  else if (key === "d"){
+    tryMovingTo(playerX+1, playerY);
   }
-  if (key === "p"){
-    autoPlay = !autoPlay;
-  }
-  if (key === "g"){
-    grid = gun;
+  else if (key === "a"){
+    tryMovingTo(playerX-1, playerY);
   }
 }
 
-function update(){
-  //need another array so you don't mess up decisions being made
-  let nextTurn = createEmptyArray(gridDimensions);
-  
-  for (let y = 0; y < gridDimensions; y++){
-    for (let x = 0; x < gridDimensions; x++) {
-      let neighbours = 0;
+function tryMovingTo(newX, newY){
+  if (newX >= 0 && newY >= 0 && newX < gridDimentions && newY < gridDimentions){
+    //check if new spot is empty
+    if (grid[newY][newX] === 0){
+      // reset current spot to be empty
+      grid[playerY][playerX] = 0;
 
-      for (let i = -1; i <= 1; i++){
-        for (let j = -1; j <= 1; j++){
-          if (y + i >= 0 && x + j >= 0 && y + i < gridDimensions && x + j < gridDimensions){
-            neighbours += grid[y+i][x+j];
+      //move player
+      playerX = newX;
+      playerY = newY;
 
-          }
-        }
-      }
-
-      //fix adding self
-      neighbours -= grid[y][x];
-
-      //applying rules
-      if (grid[y][x] === 0){
-        if (neighbours === 3){
-          nextTurn[y][x] = 1;
-        }
-        else {
-          nextTurn[y][x] = 0;
-        }
-      }
-      if (grid[y][x] === 1){
-        if (neighbours === 2 || neighbours === 3){
-          nextTurn[y][x] = 1;
-        }
-        else {
-          nextTurn[y][x] = 0;
-        }
-      }
+      //put player back in grid
+      grid[newY][newX] = 9;
     }
   }
-  grid = nextTurn;
 }
+
 
 function mousePressed(){
   if (mouseX <= width && mouseY <= height){
@@ -102,7 +75,7 @@ function mousePressed(){
 }
 
 function swap(x,y){
-  if (x >= 0 && x < gridDimensions && y >= 0 && y < gridDimensions){
+  if (x >= 0 && x < gridDimentions && y >= 0 && y < gridDimentions){
     if (grid[y][x] === 0){
       grid[y][x] = 1;
     }
@@ -114,13 +87,16 @@ function swap(x,y){
 
 
 function displayGrid(){
-  for (let y = 0; y < gridDimensions; y++){
-    for (let x = 0; x < gridDimensions; x++){
+  for (let y = 0; y < gridDimentions; y++){
+    for (let x = 0; x < gridDimentions; x++){
       if (grid[y][x] === 0){
         fill("white");
       }
       else if (grid[y][x] === 1){
         fill("black");
+      }
+      else if (grid[y][x] === 9  ){
+        fill("red");
       }
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
@@ -142,15 +118,5 @@ function createRandomArray(howLarge){
     }
   }
   return newArray;
-}
 
-function createEmptyArray(howLarge){
-  let newArray = [];
-  for (let y = 0; y < howLarge; y++){
-    newArray.push([]);
-    for (let x = 0; x < howLarge; x++){
-      newArray[y].push(0);
-    }
-  }
-  return newArray;
 }
