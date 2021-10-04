@@ -1,7 +1,7 @@
 // First Grid Example
 // Chase
 
-let gridSize = 10;
+let gridSize = 40;
 let grid;
 
 function setup() {
@@ -63,4 +63,14 @@ function createRandomGrid(howLarge){
     }
   }
   return emptyArray;
+  
+  function mousePressed(){
+    if (mouseX <= width && mouseY <= height){
+      let cellX = Math.floor(mouseX/cellSize);
+      let cellY = Math.floor(mouseY/cellSize);
+      
+      swap(cellX, cellY);
+    }
+    
+  }
 }
