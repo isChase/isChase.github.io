@@ -11,7 +11,6 @@ function setup() {
   else {
     createCanvas(windowWidth, windowWidth);
   }
-
   grid = createRandomArray(gridDimentions);
   cellSize = width / gridDimentions;
 }
