@@ -1,7 +1,7 @@
 // character + grid
 
 let grid;
-let gridDimentions = 10;
+let gridDimentions = 15;
 let cellSize;
 let level1;
 let playerX = 0;
@@ -9,7 +9,7 @@ let playerY = 0;
 
 
 function preload(){
-  level1 = loadJSON("assets/level1.json");
+  level1 = loadJSON("assets/level0.json");
 }
 
 function setup() {
@@ -48,10 +48,10 @@ function keyPressed(){
 
 function tryMovingTo(newX, newY){
   if (newX >= 0 && newY >= 0 && newX < gridDimentions && newY < gridDimentions){
-    //check if new spot is empty
-    if (grid[newY][newX] === 0){
-      // reset current spot to be empty
-      grid[playerY][playerX] = 0;
+    //check if new spot is empty or has been painted already
+    if (grid[newY][newX] === 0 || grid[newY][newX] === 9 || grid[newY][newX] === 2){
+      // reset current spot to be painted
+      grid[playerY][playerX] = 2;
 
       //move player
       playerX = newX;
@@ -63,16 +63,6 @@ function tryMovingTo(newX, newY){
   }
 }
 
-
-function mousePressed(){
-  if (mouseX <= width && mouseY <= height){
-    let cellX = Math.floor(mouseX/cellSize);
-    let cellY = Math.floor(mouseY/cellSize);
-    
-    swap(cellX, cellY);
-  }
-  
-}
 
 function swap(x,y){
   if (x >= 0 && x < gridDimentions && y >= 0 && y < gridDimentions){
@@ -95,8 +85,12 @@ function displayGrid(){
       else if (grid[y][x] === 1){
         fill("black");
       }
+      // *remember to grab image for sprite here
       else if (grid[y][x] === 9  ){
-        fill("red");
+        fill("blue");
+      }
+      else if(grid[y][x] === 2){
+        fill("green");
       }
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
