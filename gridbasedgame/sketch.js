@@ -28,30 +28,45 @@ function setup() {
 
 function draw() {
   background(220);
+  noStroke();
   displayGrid();
 }
 
+// move character using WASD or Arrow Keys
 function keyPressed(){
-  if (key === "s"){
+  if (keyCode === DOWN_ARROW){
     tryMovingTo(playerX, playerY+1);
   }
-  else if (key === "w"){
+  else if (keyCode === UP_ARROW){
     tryMovingTo(playerX, playerY-1);
   }
-  else if (key === "d"){
+  else if (keyCode === RIGHT_ARROW){
     tryMovingTo(playerX+1, playerY);
   }
-  else if (key === "a"){
+  else if (keyCode === LEFT_ARROW){
+    tryMovingTo(playerX-1, playerY);
+  }
+
+  else if (key === "s"){ //down
+    tryMovingTo(playerX, playerY+1);
+  }
+  else if (key === "w"){ //up
+    tryMovingTo(playerX, playerY-1);
+  }
+  else if (key === "d"){ //right
+    tryMovingTo(playerX+1, playerY);
+  }
+  else if (key === "a"){ //left
     tryMovingTo(playerX-1, playerY);
   }
 }
 
 function tryMovingTo(newX, newY){
   if (newX >= 0 && newY >= 0 && newX < gridDimentions && newY < gridDimentions){
-    //check if new spot is empty or has been painted already
+    //check if new spot is empty or has already been painted
     if (grid[newY][newX] === 0 || grid[newY][newX] === 9 || grid[newY][newX] === 2){
-      // reset current spot to be painted
       grid[playerY][playerX] = 2;
+      // reset current spot to be painted
 
       //move player
       playerX = newX;
@@ -62,6 +77,11 @@ function tryMovingTo(newX, newY){
     }
   }
 }
+
+// function moveUntilCannot(){
+//   while (tryMovingTo(playerx, playery+1))
+//     *paste in the tryMovingTo function here, repeat for all keys*
+// }
 
 
 function swap(x,y){
@@ -83,14 +103,16 @@ function displayGrid(){
         fill("white");
       }
       else if (grid[y][x] === 1){
+        noStroke();
         fill("black");
       }
-      // *remember to grab image for sprite here
       else if (grid[y][x] === 9  ){
-        fill("blue");
+        noStroke();
+        fill("#D36060");
       }
       else if(grid[y][x] === 2){
-        fill("green");
+        noStroke();
+        fill("#E0607E");
       }
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
@@ -112,5 +134,4 @@ function createRandomArray(howLarge){
     }
   }
   return newArray;
-
 }
