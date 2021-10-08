@@ -6,7 +6,7 @@ let cellSize;
 let level1;
 let playerX = 0;
 let playerY = 0;
-
+let state = "rest";
 
 function preload(){
   level1 = loadJSON("assets/level0.json");
@@ -28,40 +28,50 @@ function setup() {
 
 function draw() {
   background(220);
+  moveUntilCannot();
   noStroke();
   displayGrid();
 }
 
 // move character using WASD or Arrow Keys
 function keyPressed(){
-  if (keyCode === DOWN_ARROW){
-    tryMovingTo(playerX, playerY+1);
+  if (state === "rest"){
+    if (key === "s"){ //down
+      state = "down";
+    }
+    else if (key === "w"){ //up
+      state = "up";
+    }
+    else if (key === "d"){ //right
+      state = "right";
+    }
+    else if (key === "a"){ //left
+      state = "left";
+    }
   }
-  else if (keyCode === UP_ARROW){
-    tryMovingTo(playerX, playerY-1);
-  }
-  else if (keyCode === RIGHT_ARROW){
-    tryMovingTo(playerX+1, playerY);
-  }
-  else if (keyCode === LEFT_ARROW){
-    tryMovingTo(playerX-1, playerY);
-  }
-
-  else if (key === "s"){ //down
-    tryMovingTo(playerX, playerY+1);
-  }
-  else if (key === "w"){ //up
-    tryMovingTo(playerX, playerY-1);
-  }
-  else if (key === "d"){ //right
-    tryMovingTo(playerX+1, playerY);
-  }
-  else if (key === "a"){ //left
-    tryMovingTo(playerX-1, playerY);
+}
+function moveUntilCannot() {
+  if (frameCount % 3 === 0) {
+    let didMove;
+    if (state === "down") {
+      didMove = tryMoving(playerX, playerY+1);
+    }
+    else if (state === "up") {
+      didMove = tryMoving(playerX, playerY-1);
+    }
+    else if (state === "right") {
+      didMove = tryMoving(playerX+1, playerY);
+    }
+    else if (state === "left") {
+      didMove = tryMoving(playerX-1, playerY);
+    }
+    if (!didMove) {
+      state = "rest";
+    }
   }
 }
 
-function tryMovingTo(newX, newY){
+function tryMoving(newX, newY){
   if (newX >= 0 && newY >= 0 && newX < gridDimentions && newY < gridDimentions){
     //check if new spot is empty or has already been painted
     if (grid[newY][newX] === 0 || grid[newY][newX] === 9 || grid[newY][newX] === 2){
@@ -74,15 +84,12 @@ function tryMovingTo(newX, newY){
 
       //put player back in grid
       grid[newY][newX] = 9;
+
+      return true;
     }
   }
+  return false;
 }
-
-// function moveUntilCannot(){
-//   while (tryMovingTo(playerx, playery+1))
-//     *paste in the tryMovingTo function here, repeat for all keys*
-// }
-
 
 function swap(x,y){
   if (x >= 0 && x < gridDimentions && y >= 0 && y < gridDimentions){
