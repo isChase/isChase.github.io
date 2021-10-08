@@ -1,4 +1,6 @@
-// character + grid
+// Painter Game
+// Chase
+// 10/08/2021
 
 let grid;
 let gridDimentions = 15;
@@ -9,7 +11,7 @@ let playerY = 0;
 let state = "rest";
 
 function preload(){
-  level1 = loadJSON("assets/level0.json");
+  level1 = loadJSON("assets/level0.json"); //level 1
 }
 
 function setup() {
@@ -33,7 +35,7 @@ function draw() {
   displayGrid();
 }
 
-// move character using WASD or Arrow Keys
+// move character using WASD
 function keyPressed(){
   if (state === "rest"){
     if (key === "s"){ //down
@@ -51,10 +53,12 @@ function keyPressed(){
   }
 }
 function moveUntilCannot() {
+  //set frame count to 3 seconds
   if (frameCount % 3 === 0) {
     let didMove;
     if (state === "down") {
       didMove = tryMoving(playerX, playerY+1);
+      //if there's a change in state, move the player until you are no longer able to
     }
     else if (state === "up") {
       didMove = tryMoving(playerX, playerY-1);
@@ -85,6 +89,7 @@ function tryMoving(newX, newY){
       //put player back in grid
       grid[newY][newX] = 9;
 
+      //return true if character moved
       return true;
     }
   }
