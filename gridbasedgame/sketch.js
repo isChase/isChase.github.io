@@ -3,15 +3,17 @@
 // 10/08/2021
 
 let grid;
-let gridDimentions = 15;
+let gridDimentions = 30;
 let cellSize;
 let level1;
 let playerX = 0;
 let playerY = 0;
 let state = "rest";
+let score = 0;
+
 
 function preload(){
-  level1 = loadJSON("assets/level0.json"); //level 1
+  level1 = loadJSON("assets/levelforgridgame.json"); //level 1
 }
 
 function setup() {
@@ -33,6 +35,10 @@ function draw() {
   moveUntilCannot();
   noStroke();
   displayGrid();
+
+  fill("black");
+  textSize(24);
+  text("Score: " + score, 10, 25);
 }
 
 // move character using WASD
@@ -54,20 +60,24 @@ function keyPressed(){
 }
 function moveUntilCannot() {
   //set frame count to 3 seconds
-  if (frameCount % 3 === 0) {
+  if (frameCount % 2 === 0) {
     let didMove;
     if (state === "down") {
       didMove = tryMoving(playerX, playerY+1);
       //if there's a change in state, move the player until you are no longer able to
+      score++;
     }
     else if (state === "up") {
       didMove = tryMoving(playerX, playerY-1);
+      score++;
     }
     else if (state === "right") {
       didMove = tryMoving(playerX+1, playerY);
+      score++;
     }
     else if (state === "left") {
       didMove = tryMoving(playerX-1, playerY);
+      score++;
     }
     if (!didMove) {
       state = "rest";

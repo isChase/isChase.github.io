@@ -1,7 +1,7 @@
 // character + grid
 
 let grid;
-let gridDimentions = 15;
+let gridDimentions = 30;
 let cellSize;
 let level1;
 let playerX = 0;
