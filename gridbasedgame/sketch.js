@@ -36,9 +36,9 @@ function draw() {
   noStroke();
   displayGrid();
 
-  fill("black");
-  textSize(24);
-  text("Score: " + score, 10, 25);
+  fill("white");
+  textSize(22);
+  text("Score: " + score, 400, 400);
 }
 
 // move character using WASD
