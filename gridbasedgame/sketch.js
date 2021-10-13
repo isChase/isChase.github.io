@@ -30,7 +30,7 @@ function setup() {
   grid[playerY][playerX] = 9;
 }
 
-function draw() {
+function draw(){
   background(220);
   moveUntilCannot();
   noStroke();
@@ -40,7 +40,7 @@ function draw() {
   textSize(22);
   text("Score: " + score, 400, 400);
 }
-
+ 
 // move character using WASD
 function keyPressed(){
   if (state === "rest"){
