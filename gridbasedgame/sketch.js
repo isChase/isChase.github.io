@@ -9,11 +9,12 @@ let level1;
 let playerX = 0;
 let playerY = 0;
 let state = "rest";
-let score = 0;
-
+let mode = 0;
+// let paintNoise;
 
 function preload(){
   level1 = loadJSON("assets/levelforgridgame.json"); //level 1
+  // paintNoise = loadSound("assets/");
 }
 
 function setup() {
@@ -31,21 +32,32 @@ function setup() {
 }
 
 function draw(){
-  background(220);
-  moveUntilCannot();
-  noStroke();
-  displayGrid();
+  if (mode === 0) {
+    background(220);
+    moveUntilCannot();
+    noStroke();
+    displayGrid();
+    checkIfGameWon();
+  }
 
-  fill("white");
-  textSize(22);
-  text("Score: " + score, 400, 400);
+  else if (mode === 1){
+    displayScreen();
+  }
+
+  else if (mode === 3) {
+    background("white");
+    textSize(100);
+    fill("black");
+    text("Game Over");
+  }
 }
- 
+
 // move character using WASD
 function keyPressed(){
   if (state === "rest"){
     if (key === "s"){ //down
       state = "down";
+      //paintNoise.play();   * repeat for all keys *
     }
     else if (key === "w"){ //up
       state = "up";
@@ -58,6 +70,8 @@ function keyPressed(){
     }
   }
 }
+
+
 function moveUntilCannot() {
   //set frame count to 3 seconds
   if (frameCount % 2 === 0) {
@@ -65,19 +79,15 @@ function moveUntilCannot() {
     if (state === "down") {
       didMove = tryMoving(playerX, playerY+1);
       //if there's a change in state, move the player until you are no longer able to
-      score++;
     }
     else if (state === "up") {
       didMove = tryMoving(playerX, playerY-1);
-      score++;
     }
     else if (state === "right") {
       didMove = tryMoving(playerX+1, playerY);
-      score++;
     }
     else if (state === "left") {
       didMove = tryMoving(playerX-1, playerY);
-      score++;
     }
     if (!didMove) {
       state = "rest";
@@ -119,41 +129,74 @@ function swap(x,y){
 
 
 function displayGrid(){
-  for (let y = 0; y < gridDimentions; y++){
-    for (let x = 0; x < gridDimentions; x++){
-      if (grid[y][x] === 0){
-        fill("white");
+  if (mode === 0) {
+    for (let y = 0; y < gridDimentions; y++){
+      for (let x = 0; x < gridDimentions; x++){
+        if (grid[y][x] === 0){
+          fill("white");
+        }
+        else if (grid[y][x] === 1){
+          noStroke();
+          fill("black");
+        }
+        else if (grid[y][x] === 9  ){
+          noStroke();
+          fill("#D36060");
+        }
+        else if(grid[y][x] === 2){
+          noStroke();
+          fill("#E0607E");
+        }
+        rect(x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      else if (grid[y][x] === 1){
-        noStroke();
-        fill("black");
-      }
-      else if (grid[y][x] === 9  ){
-        noStroke();
-        fill("#D36060");
-      }
-      else if(grid[y][x] === 2){
-        noStroke();
-        fill("#E0607E");
-      }
-      rect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
   }
 }
 
 function createRandomArray(howLarge){
-  let newArray = [];
-  for (let y = 0; y < howLarge; y++){
-    newArray.push([]);
-    for (let x = 0; x < howLarge; x++){
-      if (random(0, 100) > 50){
-        newArray[y].push(0);
-
+  if (mode === 0) {
+    let newArray = [];
+    for (let y = 0; y < howLarge; y++){
+      newArray.push([]);
+      for (let x = 0; x < howLarge; x++){
+        if (random(0, 100) > 50){
+          newArray[y].push(0);
+  
+        }
+        else {
+          newArray[y].push(1);
+        }
       }
-      else {
-        newArray[y].push(1);
+    }
+    return newArray;
+  }
+}
+
+
+function checkIfGameWon() {
+  for (let y = 0; y < gridDimentions; y++){
+    for (let x = 0; x < gridDimentions[y]; x++){
+      if (grid[y][x] === 0) {
+        return false;
       }
     }
   }
-  return newArray;
+  return true;
+}
+
+
+function setScreens(){
+  if (checkIfGameWon() === true) {
+    mode = 1;
+  }
+  else {
+    mode = 3;
+  }
+}
+
+function displayScreen(){
+  background("white");
+  textSize(100);
+  fill("black");
+  text("You Won!", width/2, height/2);
 }
