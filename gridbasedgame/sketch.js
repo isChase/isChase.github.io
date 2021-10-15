@@ -2,6 +2,7 @@
 // Chase
 // 10/08/2021
 
+let timer = 30;
 let grid;
 let gridDimentions = 30;
 let cellSize;
@@ -9,7 +10,7 @@ let level1;
 let playerX = 0;
 let playerY = 0;
 let state = "rest";
-let mode = 0;
+let mode = 4;
 // let paintNoise;
 
 function preload(){
@@ -37,18 +38,29 @@ function draw(){
     moveUntilCannot();
     noStroke();
     displayGrid();
-    checkIfGameWon();
+    setScreens();
   }
 
   else if (mode === 1){
     displayScreen();
   }
+  else if (mode === 4){
+    startScreen();
+  }
 
-  else if (mode === 3) {
-    background("white");
-    textSize(100);
-    fill("black");
-    text("Game Over");
+  if (mode === 0) {
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    fill("white");
+    text(timer, 450, 450);
+  
+    if (frameCount % 60 === 0 && timer > 0) {
+      timer--;
+    }
+    if (timer === 0) {
+      mode = 3;
+      text("GAME OVER", width/2, height*0.6);
+    }
   }
 }
 
@@ -68,6 +80,9 @@ function keyPressed(){
     else if (key === "a"){ //left
       state = "left";
     }
+  }
+  if (key === " ") {
+    mode = 0;
   }
 }
 
@@ -95,19 +110,19 @@ function moveUntilCannot() {
   }
 }
 
-function tryMoving(newX, newY){
-  if (newX >= 0 && newY >= 0 && newX < gridDimentions && newY < gridDimentions){
+function tryMoving(dX, dY){
+  if (dX >= 0 && dY >= 0 && dX < gridDimentions && dY < gridDimentions){
     //check if new spot is empty or has already been painted
-    if (grid[newY][newX] === 0 || grid[newY][newX] === 9 || grid[newY][newX] === 2){
+    if (grid[dY][dX] === 0 || grid[dY][dX] === 9 || grid[dY][dX] === 2){
       grid[playerY][playerX] = 2;
       // reset current spot to be painted
 
       //move player
-      playerX = newX;
-      playerY = newY;
+      playerX = dX;
+      playerY = dY;
 
       //put player back in grid
-      grid[newY][newX] = 9;
+      grid[dY][dX] = 9;
 
       //return true if character moved
       return true;
@@ -175,7 +190,7 @@ function createRandomArray(howLarge){
 
 function checkIfGameWon() {
   for (let y = 0; y < gridDimentions; y++){
-    for (let x = 0; x < gridDimentions[y]; x++){
+    for (let x = 0; x < gridDimentions; x++){
       if (grid[y][x] === 0) {
         return false;
       }
@@ -189,14 +204,22 @@ function setScreens(){
   if (checkIfGameWon() === true) {
     mode = 1;
   }
-  else {
-    mode = 3;
-  }
 }
+
 
 function displayScreen(){
   background("white");
   textSize(100);
   fill("black");
-  text("You Won!", width/2, height/2);
+  text("YOU WON", 400, 400);
+}
+
+function startScreen(){
+  if (mode === 4) {
+    background("#E0607E");
+    textAlign(CENTER, CENTER);
+    textSize(50);
+    fill("black");
+    text("PRESS SPACE TO BEGIN", 360, 300);
+  }
 }
