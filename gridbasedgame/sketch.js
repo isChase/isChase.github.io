@@ -11,11 +11,18 @@ let playerX = 0;
 let playerY = 0;
 let state = "rest";
 let mode = 4;
+let countDown;
 // let paintNoise;
+
 
 function preload(){
   level1 = loadJSON("assets/levelforgridgame.json"); //level 1
-  // paintNoise = loadSound("assets/");
+
+  // paintNoise = loadSound("assets/Pong_sfx.zip");
+
+  soundFormats('mp3', 'ogg');
+
+  countDown = loadSound("assets/Menu Choice.mp3");
 }
 
 function setup() {
@@ -69,16 +76,19 @@ function keyPressed(){
   if (state === "rest"){
     if (key === "s"){ //down
       state = "down";
-      //paintNoise.play();   * repeat for all keys *
+      // paintNoise.play();
     }
     else if (key === "w"){ //up
       state = "up";
+      // paintNoise.play();
     }
     else if (key === "d"){ //right
       state = "right";
+      // paintNoise.play();
     }
     else if (key === "a"){ //left
       state = "left";
+      // paintNoise.play();
     }
   }
   if (key === " ") {
@@ -88,7 +98,7 @@ function keyPressed(){
 
 
 function moveUntilCannot() {
-  //set frame count to 3 seconds
+  //set frame count to 2 seconds
   if (frameCount % 2 === 0) {
     let didMove;
     if (state === "down") {
@@ -142,7 +152,7 @@ function swap(x,y){
   }
 }
 
-
+//setup the grid
 function displayGrid(){
   if (mode === 0) {
     for (let y = 0; y < gridDimentions; y++){
@@ -187,7 +197,7 @@ function createRandomArray(howLarge){
   }
 }
 
-
+//check if the entire grid has been covered -- if true, display win screen (see line 213)
 function checkIfGameWon() {
   for (let y = 0; y < gridDimentions; y++){
     for (let x = 0; x < gridDimentions; x++){
@@ -214,12 +224,18 @@ function displayScreen(){
   text("YOU WON", 400, 400);
 }
 
-function startScreen(){
+function startScreen(){ //display a start screen
   if (mode === 4) {
     background("#E0607E");
     textAlign(CENTER, CENTER);
     textSize(50);
     fill("black");
     text("PRESS SPACE TO BEGIN", 360, 300);
+  }
+}
+
+function timerEnds(){
+  if (timer < 4) {
+    countDown.play();
   }
 }
