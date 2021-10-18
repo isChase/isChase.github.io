@@ -20,7 +20,7 @@ function preload(){
 
   // paintNoise = loadSound("assets/Pong_sfx.zip");
 
-  soundFormats('mp3', 'ogg');
+  soundFormats("mp3", "ogg");
 
   countDown = loadSound("assets/Menu Choice.mp3");
 }
