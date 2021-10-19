@@ -1,2 +1,2 @@
 # isChase.github.io
-Assignments + other for Comp. Sci 30
+Assignments for Comp Sci
