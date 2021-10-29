@@ -12,17 +12,17 @@ let playerY = 0;
 let state = "rest";
 let mode = 4;
 let countDown;
-// let paintNoise;
+let moveNoise;
 
 
 function preload(){
   level1 = loadJSON("assets/levelforgridgame.json"); //level 1
 
-  // paintNoise = loadSound("assets/Pong_sfx.zip");
+  moveNoise = loadSound("assets/Pop.ogg");
 
   soundFormats("mp3", "ogg");
 
-  countDown = loadSound("assets/Menu Choice.mp3");
+  countDown = loadSound("assets/countdown-a.ogg");
 }
 
 function setup() {
@@ -37,6 +37,7 @@ function setup() {
 
   //place player
   grid[playerY][playerX] = 9;
+
 }
 
 function draw(){
@@ -46,6 +47,7 @@ function draw(){
     noStroke();
     displayGrid();
     setScreens();
+    timerEnds();
   }
 
   else if (mode === 1){
@@ -76,19 +78,19 @@ function keyPressed(){
   if (state === "rest"){
     if (key === "s"){ //down
       state = "down";
-      // paintNoise.play();
+      moveNoise.play();
     }
     else if (key === "w"){ //up
       state = "up";
-      // paintNoise.play();
+      moveNoise.play();
     }
     else if (key === "d"){ //right
       state = "right";
-      // paintNoise.play();
+      moveNoise.play();
     }
     else if (key === "a"){ //left
       state = "left";
-      // paintNoise.play();
+      moveNoise.play();
     }
   }
   if (key === " ") {
@@ -235,7 +237,7 @@ function startScreen(){ //display a start screen
 }
 
 function timerEnds(){
-  if (timer < 4) {
+  if (timer === 4) {
     countDown.play();
   }
 }
