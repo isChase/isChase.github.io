@@ -2,12 +2,11 @@
 // Chase
 // 10/26/2021
 //
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+// remember to beta test -- get people to test game
 
-let scene, renderer, controls;
+let scene, renderer, controls, deltaTime, rotateHorizontally, rotateVertically, moveY, moveXZ, zoom;
 
-function setScene() {
+function init() {
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(55,window.innerWidth/window.innerHeight,45,30000);
   camera.position.set(-900,-200,-900);
@@ -16,10 +15,21 @@ function setScene() {
   renderer.setSize(window.innerWidth,window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  controls = new THREE.OrbitControls(camera);
+  // controls = new THREE.OrbitControls(camera);
+  let controls = new THREE.SimpleOrbitControls(renderer, scene, camera);
   controls.addEventListener("change", renderer);
   controls.minDistance = 500;
   controls.maxDistance = 1500;
+
+  let controllerInput = {
+    deltaTime: deltaTime,                                      // time passed, in seconds, since last update call
+    rotateHorizontally: rotateHorizontally,                    // rotation around y axis
+    rotateVertically: rotateVertically,                        // rotate vertically around x / z axis
+    moveOffsetVertically: moveY,                               // move the target offset (affect lookat AND camera position), along camera's Y axis. 
+    moveOffsetHorizontally: moveXZ,                            // move the target offset left / right, relative to camera's world direction.
+    zoom: zoom,                                                // zoom in / out
+  };
+  controls.update(controllerInput);
         
   let materialArray = [];
   let texture_ft = new THREE.TextureLoader().load("bay_ft.jpg");
@@ -43,11 +53,14 @@ function setScene() {
   let skybox = new THREE.Mesh( skyboxGeo, materialArray );
   scene.add( skybox );  
   animate();
+  window.requestAnimationFrame(animate);
 }
+
+
 function animate() {
   controls.update();
   renderer.render(scene,camera);
-  requestAnimationFrame(animate);
+  window.requestAnimationFrame(animate);
 }
 
-setScene();
+init();
