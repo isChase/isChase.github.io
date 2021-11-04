@@ -22,15 +22,15 @@ class Hand {
     this.cards.forEach((e) => {
       if (!isNaN(e.value))
         total += e.value;
-      else if (e.value == "A")
-        total = total + 11 < 22 ? total + 11 : total + 1;
+      else if (e.value == "A") 
+        total = total + 11 < 22 ? total + 11 : total + 1; // set the Ace to be either 11, or 1 by asking a question of if it will bust player's hand
       else
         total += 10;
     });
     return total;
   }
   busted() {
-    if (this.getValue() > 21) {
+    if (this.getValue() > 21) { //if the total of the player's hands is above 21, return true for bust.
       return true;
     } else {
       return false;
@@ -61,8 +61,8 @@ class Hand {
 class Deck {
   constructor() {
     this.cards = [];
-    this.suits = ["s", "c", "d", "h"];
-    this.values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
+    this.suits = ["s", "c", "d", "h"]; // declare the suits [spades, clubs, diamonds, hearts]
+    this.values = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"]; // declare the values
     this.suits.forEach((s) => {
       this.values.forEach((v) => {
         this.cards.push(createCard(0, 0, s, v));
@@ -72,9 +72,9 @@ class Deck {
   }
 
   shuffle() {
-    for (let i = this.cards.length - 1; i > 0; i--) {
+    for (let i = this.cards.length - 1; i > 0; i--) { // we use "i--" to count down the cards that have already been shuffled
       let r = Math.floor(Math.random() * (i + 1));
-      let temp = this.cards[i];
+      let temp = this.cards[i]; // shuffle each card using a bootleg loop
       this.cards[i] = this.cards[r];
       this.cards[r] = temp;
     }
@@ -146,9 +146,9 @@ function createCard(x, y, s, v) {
       text(this.value, this.x - 20, this.y - 20);
       text(this.value, this.x + 10, this.y + 30);
 
-      // diamonds
-      if (this.suit == "d") {
+      if (this.suit === "d"){
         push();
+        // draw the shape of a diamond using a rectangle and rotating it by π/4
         noStroke();
         translate(this.x, this.y);
         rotate(PI / 4);
@@ -156,9 +156,9 @@ function createCard(x, y, s, v) {
         pop();
       }
 
-      // hearts
       if (this.suit == "h") {
         push();
+        // draw a heart using two circles and a rect and rotate by π/4
         noStroke();
         translate(this.x, this.y);
         rotate(PI / 4);
@@ -168,10 +168,9 @@ function createCard(x, y, s, v) {
         pop();
       }
 
-      // spades
-
       if (this.suit == "s") {
         push();
+        // draw a spade using a trianlge, rectangle, and two circles and rotating by π/4
         noStroke();
         translate(this.x, this.y);
         triangle(0, 0, 3, 13, -3, 13);
@@ -182,7 +181,7 @@ function createCard(x, y, s, v) {
         pop();
       }
 
-      // clubs
+      // draw a club using a triangle and 3 circles
       if (this.suit == "c") {
         push();
         fill(0);
@@ -195,7 +194,7 @@ function createCard(x, y, s, v) {
       }
     },
     setColor: function () {
-      if (this.suit == "d" || this.suit == "h") {
+      if (this.suit == "d" || this.suit == "h") { // set diamond & hearts to red and spades & clubs to black
         this.color = "red";
       } else {
         this.color = "black";
@@ -213,19 +212,19 @@ function keyPressed() {
   }
   if (keyCode == 83) //S key
     stand();
-  if (keyCode == 32)
+  if (keyCode == 32) // space bar
     deal();
-  if (keyCode == 48)
+  if (keyCode == 48) // 0
     bet = 0;
-  if (keyCode == 49)
+  if (keyCode == 49) // 1
     bet += 100;
-  if (keyCode == 50)
+  if (keyCode == 50) // 2
     bet += 200;
-  if (keyCode == 51)
+  if (keyCode == 51) // 3 
     bet += 300;
-  if (keyCode == 52)
+  if (keyCode == 52) // 4
     bet += 400;
-  if (keyCode == 53)
+  if (keyCode == 53) // 5
     bet += 500;
 
 }
@@ -248,7 +247,7 @@ function hit() {
   if (deck.cards.length < 1)
     deck = new Deck();
 
-  player.addCard(deck.dealCard());
+  player.addCard(deck.dealCard()); //add one card if player decides to hit
 
   if (player.busted()) {
     message = "DEALER WON!";
@@ -264,7 +263,7 @@ function stand() {
   dealer.cards[0].visible = true;
   console.log(dealer.cards[0].visible)
   inPlay = false;
-  if (dealer.busted()) {
+  if (dealer.busted()) { // set win/lose screens based off of the dealer's value compared to the player's
     message = "DEALER BUST!";
   } else if (player.getValue() > dealer.getValue()) {
     message = "YOU WIN!";
