@@ -32,26 +32,29 @@ class Hand {
   busted() {
     if (this.getValue() > 21) { //if the total of the player's hands is above 21, return true for bust.
       return true;
-    } else {
+    } 
+    else {
       return false;
     }
   }
   draw() {
     if (this.isDealer) {
       this.cards.forEach((e, i) => {
-        if (inPlay)
-          e.visible = i == 0 ? false : true;
-        else
+        if (inPlay){
+          e.visible = i === 0 ? false : true;
+        }
+        else {
           e.visible = true;
-        e.x = this.x + (i * 28);
-        e.y = this.y + (i * 10);
+        e.x = this.x + i * 28;
+        e.y = this.y + i * 10;
         e.draw();
       });
-    } else {
+    } 
+    else {
       this.cards.forEach((e, i) => {
         e.visible = true;
-        e.x = this.x + (i * 28);
-        e.y = this.y + (i * 10);
+        e.x = this.x + i * 28;
+        e.y = this.y + i * 10;
         e.draw();
       });
     }
@@ -156,7 +159,7 @@ function createCard(x, y, s, v) {
         pop();
       }
 
-      if (this.suit == "h") {
+      if (this.suit === "h") {
         push();
         // draw a heart using two circles and a rect and rotate by π/4
         noStroke();
@@ -168,7 +171,7 @@ function createCard(x, y, s, v) {
         pop();
       }
 
-      if (this.suit == "s") {
+      if (this.suit === "s") {
         push();
         // draw a spade using a trianlge, rectangle, and two circles and rotating by π/4
         noStroke();
@@ -182,7 +185,7 @@ function createCard(x, y, s, v) {
       }
 
       // draw a club using a triangle and 3 circles
-      if (this.suit == "c") {
+      if (this.suit === "c") {
         push();
         fill(0);
         translate(this.x, this.y);
@@ -194,9 +197,10 @@ function createCard(x, y, s, v) {
       }
     },
     setColor: function () {
-      if (this.suit == "d" || this.suit == "h") { // set diamond & hearts to red and spades & clubs to black
+      if (this.suit === "d" || this.suit === "h") { // set diamond & hearts to red and spades & clubs to black
         this.color = "red";
-      } else {
+      } 
+      else {
         this.color = "black";
       }
     },
@@ -205,71 +209,85 @@ function createCard(x, y, s, v) {
 
 function keyPressed() {
   console.log(keyCode);
-  if (keyCode == 72) { //H key 
+  if (keyCode === 72) { //H key 
     if (inPlay) {
       hit();
     }
   }
-  if (keyCode == 83) //S key
+  if (keyCode === 83) {//S key
     stand();
-  if (keyCode == 32) // space bar
+  }
+  if (keyCode === 32){ // space bar
     deal();
-  if (keyCode == 48) // 0
+  }  
+  if (keyCode === 48){ // 0
     bet = 0;
-  if (keyCode == 49) // 1
+  }
+  if (keyCode === 49){ // 1
     bet += 100;
-  if (keyCode == 50) // 2
+  }
+  if (keyCode === 50){ // 2
     bet += 200;
-  if (keyCode == 51) // 3 
+  }
+  if (keyCode === 51){ // 3 
     bet += 300;
-  if (keyCode == 52) // 4
+  }
+  if (keyCode === 52){ // 4
     bet += 400;
-  if (keyCode == 53) // 5
+  }
+  if (keyCode === 53){ // 5
     bet += 500;
+  }
 
 }
 
 function deal() {
   inPlay = true;
-  if (deck.cards.length < 4)
+  if (deck.cards.length < 4){
     deck = new Deck();
-  player.cards = [];
-  dealer.cards = [];
+    player.cards = [];
+    dealer.cards = [];
+  }
  
   player.addCard(deck.dealCard());
   player.addCard(deck.dealCard());
-  dealer.addCard(deck.dealCard())
+  dealer.addCard(deck.dealCard());
   dealer.addCard(deck.dealCard());
   message = "Hit or Stay?";
 }
 
 function hit() {
-  if (deck.cards.length < 1)
+  if (deck.cards.length < 1){
     deck = new Deck();
 
-  player.addCard(deck.dealCard()); //add one card if player decides to hit
+    player.addCard(deck.dealCard()); //add one card if player decides to hit
+  }
 
   if (player.busted()) {
     message = "DEALER WON!";
     inPlay = false;
   }
-  console.log(player.getValue())
+  console.log(player.getValue());
 }
 
 function stand() {
-  while (dealer.getValue() < 17)
+  while (dealer.getValue() < 17){
     dealer.addCard(deck.dealCard());
-  console.log(dealer.cards[0].visible)
-  dealer.cards[0].visible = true;
-  console.log(dealer.cards[0].visible)
-  inPlay = false;
+    console.log(dealer.cards[0].visible)
+    dealer.cards[0].visible = true;
+    console.log(dealer.cards[0].visible)
+    inPlay = false;
+  }
   if (dealer.busted()) { // set win/lose screens based off of the dealer's value compared to the player's
     message = "DEALER BUST!";
-  } else if (player.getValue() > dealer.getValue()) {
+  } 
+  else if (player.getValue() > dealer.getValue()) {
     message = "YOU WIN!";
-  } else if (player.getValue() === dealer.getValue()) {
+  } 
+  else if (player.getValue() === dealer.getValue()) {
     message = "YOU TIED.";
-  } else {
+  } 
+  else {
     message = "YOU LOST!";
   }
 }
