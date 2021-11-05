@@ -3,8 +3,9 @@
 // Chase
 //
 // 01/11/2021
+//
+// everything worked fine before I brought it to school btw!
 
-// create a class for the player's hand
 class Hand {
   constructor(x, y, d = false) {
     this.isDealer = d;
@@ -20,12 +21,15 @@ class Hand {
   getValue() {
     let total = 0;
     this.cards.forEach((e) => {
-      if (!isNaN(e.value))
+      if (!isNaN(e.value)) {
         total += e.value;
-      else if (e.value == "A") 
-        total = total + 11 < 22 ? total + 11 : total + 1; // set the Ace to be either 11, or 1 by asking a question of if it will bust player's hand
-      else
+      }
+      else if (e.value === "A") {
+        total = total + 11 < 22 ? total + 11 : total + 1;
+      } // set the Ace to be either 11, or 1 by asking a question of if it will bust player's hand
+      else {
         total += 10;
+      }
     });
     return total;
   }
@@ -45,11 +49,12 @@ class Hand {
         }
         else {
           e.visible = true;
-        e.x = this.x + i * 28;
-        e.y = this.y + i * 10;
-        e.draw();
+          e.x = this.x + i * 28;
+          e.y = this.y + i * 10;
+          e.draw();
+        }
       });
-    } 
+    }
     else {
       this.cards.forEach((e, i) => {
         e.visible = true;
@@ -204,7 +209,7 @@ function createCard(x, y, s, v) {
         this.color = "black";
       }
     },
-  }
+  };
 }
 
 function keyPressed() {
@@ -273,9 +278,9 @@ function hit() {
 function stand() {
   while (dealer.getValue() < 17){
     dealer.addCard(deck.dealCard());
-    console.log(dealer.cards[0].visible)
+    console.log(dealer.cards[0].visible);
     dealer.cards[0].visible = true;
-    console.log(dealer.cards[0].visible)
+    console.log(dealer.cards[0].visible);
     inPlay = false;
   }
   if (dealer.busted()) { // set win/lose screens based off of the dealer's value compared to the player's
